@@ -1,0 +1,65 @@
+environment:
+    auditUsername: tc
+    
+    environmentLevelVariable1: This is the environment level variable 1 value 
+    environmentLevelVariable2: This is the environment level variable 2 value
+    environmentLevelVariable3: This is the environment level variable 3 value
+    
+    cfgFileLocationVar: cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+    
+applicationGroups:
+    noCfgFile:
+        configurationFiles:
+            - noCfgFile
+        servers:
+            192.168.126.147:  
+
+    noCfgFileTemplate:
+        configurationFiles:
+            - noCfgFileTemplate
+        servers:
+            192.168.126.147:  
+
+    cfgFileWith4Vars_TypeFile_IgnoreMatchLines:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeFile_IgnoreMatchLines
+        servers:
+            192.168.126.147:
+
+    cfgFileWith4Vars_TypeFile_InvalidLocation:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeFile_InvalidLocation
+        servers:
+            192.168.126.147:
+            
+    cfgFileWith4Vars_TypeFile_ValidLocation:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeFile_ValidLocation
+        servers:
+            192.168.126.147: 
+            
+    cfgFileWith4Vars_TypeFile_ValidLocation_WithVars:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+        servers:
+            192.168.126.147:  
+
+
+    cfgFileWith4Vars_TypeCmd_IgnoreMatchLines:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeCmd_IgnoreMatchLines
+        servers:
+            192.168.126.147:  
+            
+    cfgFileWith4Vars_TypeCmd_WithCommand:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeCmd_WithCommand
+        servers:
+            192.168.126.147:
+
+    cfgFileWith4Vars_TypeCmd_NoCommand:
+        configurationFiles:
+            - cfgFileWith4Vars_TypeCmd_NoCommand
+        servers:
+            192.168.126.147:
+

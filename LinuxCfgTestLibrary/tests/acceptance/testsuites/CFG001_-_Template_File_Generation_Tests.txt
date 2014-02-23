@@ -1,0 +1,70 @@
+*** Settings ***
+Suite Setup       Get Data    ${env01}
+Resource          ../resources/globalincludes.txt
+
+*** Test Cases ***
+CFG001-TC1: cfgFileWith4Vars_TypeFile_IgnoreMatchLines
+    [Setup]    Set up test data file for single host    cfgFileWith4Vars_TypeFile_IgnoreMatchLines
+    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeFile_IgnoreMatchLines
+    [Teardown]    Teardown test data file for single host    cfgFileWith4Vars_TypeFile_IgnoreMatchLines
+
+CFG001-TC2: cfgFileWith4Vars_TypeFile_InvalidLocation
+    ${msg} =    Run Keyword And Expect Error    *    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeFile_InvalidLocation
+    Should Start With    ${msg}    There were no files matching
+
+CFG001-TC3: cfgFileWith4Vars_TypeFile_ValidLocation
+    [Setup]    Set up test data file for single host    cfgFileWith4Vars_TypeFile_ValidLocation
+    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeFile_ValidLocation
+    [Teardown]    Teardown test data file for single host    cfgFileWith4Vars_TypeFile_ValidLocation
+
+CFG001-TC4: cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+    [Setup]    Set up test data file for single host    cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+    [Teardown]    Teardown test data file for single host    cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+
+CFG001-TC5: cfgFileWith4Vars_TypeCmd_WithCommand
+    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeCmd_WithCommand
+
+CFG001-TC6: cfgFileWith4Vars_TypeCmd_NoCommand
+    ${msg} =    Run Keyword And Expect Error    *    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeCmd_NoCommand
+    Should Start With    ${msg}    No command is set for template file
+
+CFG001-TC7: cfgFileWith4Vars_TypeCmd_IgnoreMatchLines
+    linux_config_check_files    ${env01}    cfgFileWith4Vars_TypeCmd_IgnoreMatchLines
+
+CFG001-TC7: noCfgFile
+    ${msg} =    Run Keyword And Expect Error    *    linux_config_check_files    ${env01}    noCfgFile
+    Should Start With    ${msg}    No configuration file for
+
+CFG001-TC7: noCfgFileTemplate
+    ${msg} =    Run Keyword And Expect Error    *    linux_config_check_files    ${env01}    noCfgFileTemplate
+    Should Start With    ${msg}    No configuration template is configured for
+
+*** Keywords ***
+Set up test data file
+    [Arguments]    ${server}    ${user}    ${password}    ${sourceFileName}    ${destFileName}
+    RSA_set_keystore_location    ${ROOT_DIR}/keyStore    False
+    RSA_ssh_copy_key    ${server}    ${user}    ${password}
+    Open Connection    ${server}
+    ${keyStoreInfo} =    RSA Get Key Locations
+    Login With Public Key    ${user}    ${keyStoreInfo['privateKey']}    ${keyStoreInfo['privateKeyPass']}
+    Put File    ${TEMPLATES_RESOURCES_DIR}/pregeneratedFiles/${sourceFileName}    ${destFileName}
+    Close All Connections
+
+Set up test data file for single host
+    [Arguments]    ${config}
+    RSA_set_keystore_location    ${ROOT_DIR}/keyStore    False
+    RSA_ssh_copy_key    ${${config}[0]}    ${SSH_USER}    ${SSH_PASS}
+    Open Connection    ${${config}[0]}
+    ${keyStoreInfo} =    RSA Get Key Locations
+    Login With Public Key    ${SSH_USER}    ${keyStoreInfo['privateKey']}    ${keyStoreInfo['privateKeyPass']}
+    Put File    ${TEMPLATES_RESOURCES_DIR}/pregeneratedFiles/${config}    ${config}.txt
+    Close All Connections
+
+Teardown test data file for single host
+    [Arguments]    ${config}
+    Open Connection    ${${config}[0]}
+    ${keyStoreInfo} =    RSA Get Key Locations
+    Login With Public Key    ${SSH_USER}    ${keyStoreInfo['privateKey']}    ${keyStoreInfo['privateKeyPass']}
+    Execute Command    rm -rf ${config}.txt    ${config}.txt
+    Close All Connections

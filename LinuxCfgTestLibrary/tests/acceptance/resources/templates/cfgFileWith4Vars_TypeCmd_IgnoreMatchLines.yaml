@@ -1,0 +1,11 @@
+configuration:
+    type: command
+    command: "ls -1 /" # This is mandatory
+    ignore-matching-lines:
+        - BlahMatchMe1
+        - BlahMatchMe2
+        
+variable1: Configuration Template Level Variable 1
+variable2: Configuration Template Level Variable 2
+variable3: Configuration Template Level Variable 3
+variable4: Configuration Template Level Variable 4

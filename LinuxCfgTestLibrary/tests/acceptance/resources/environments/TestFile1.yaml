@@ -1,0 +1,82 @@
+environment:
+    auditUsername: tc
+    
+    
+    environmentLevelVariable1: This is the environment level variable 1 value 
+    environmentLevelVariable2: This is the environment level variable 2 value
+    environmentLevelVariable3: This is the environment level variable 3 value
+    
+    cfgFileLocationVar: cfgFileWith4Vars_TypeFile_ValidLocation_WithVars
+    
+applicationGroups:
+
+## Single Server Tests ##
+# Single configuration file with no server variables, no group variables, no linux commands and one server
+    file1AppGroup_NoVars_NoCmd_OneServer:
+        configurationFiles:
+            - cfgFileWithNoVars_txt
+        
+        servers:
+            192.168.126.147:
+
+# Single configuration file with no variables but configuration template variables
+    file1AppGroup_NoVars:
+        configurationFiles:
+            - cfgFileWith1Vars_txt
+           
+        servers:
+            192.168.126.147:
+            
+# Single configuration file with no server variables, group variables, no linux commands and one server
+    file1AppGroup_GroupVars_NoCmd_OneServer:
+        configurationFiles:
+            - cfgFileWith1Vars_txt
+
+        cfgFileWith1Vars_txt:
+            variable1: file1AppGroup_GroupVars_NoCmd_OneServer
+            
+        servers:
+            192.168.126.147:
+                        
+       
+# Single configuration file with server variables, no group variables, no linux commands and one server
+    file1AppGroup_ServerVars_NoCmd_OneServer:
+        configurationFiles:
+            - cfgFileWith1Vars_txt
+
+        servers:
+            192.168.126.147:
+                cfgFileWith1Vars_txt: file1AppGroup_ServerVars_NoCmd_OneServer
+
+# Single configuration file with server variables, group variables, no linux commands and one server
+    file1AppGroup_WithVars_NoCmd_OneServer:
+        configurationFiles:
+            - cfgFileWith1Vars_txt
+            
+        cfgFileWith1Vars_txt:
+            variable1: "This should be updated by the server level variable"
+            
+        servers:
+            192.168.126.147:
+                cfgFileWith1Vars_txt: file1AppGroup_WithVars_NoCmd_OneServer
+# 2 configuration files with no server variables, no group variables, no linux commands and one server
+# 2 configuration files with no server variables, group variables, no linux commands and one server
+# 2 configuration files with server variables, group variables, no linux commands and one server
+# 2 configuration files with server variables, no group variables, no linux commands and one server
+
+## 2 Server Tests ##
+# Single configuration file with no server variables, no group variables, no linux commands and two servers
+# Single configuration file with no server variables, group variables, no linux commands and two servers
+# Single configuration file with server variables, group variables, no linux commands and two servers
+# Single configuration file with server variables, no group variables, no linux commands and two servers
+
+# 2 configuration files with no server variables, no group variables, no linux commands and two servers
+# 2 configuration files with no server variables, group variables, no linux commands and two servers
+# 2 configuration files with server variables, group variables, no linux commands and two servers
+# 2 configuration files with server variables, no group variables, no linux commands and two servers
+
+
+
+# Multiply configuration files with no server variables, no linux commands and one server
+# Multiply configuration files with server variables, no linux commands and one server
+

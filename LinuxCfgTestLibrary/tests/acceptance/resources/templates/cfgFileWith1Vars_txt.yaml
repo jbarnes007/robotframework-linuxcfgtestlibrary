@@ -1,0 +1,8 @@
+configuration:
+    type: file
+    fileLocation: "cfgFileWith1Vars.txt" # This is mandatory
+    ignore-matching-lines:
+        - WebUserId
+        - WebPassword
+        
+variable1: Configuration Template Test

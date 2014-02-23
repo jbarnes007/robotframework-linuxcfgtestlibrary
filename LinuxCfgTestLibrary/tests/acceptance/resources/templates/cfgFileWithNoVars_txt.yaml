@@ -1,0 +1,5 @@
+configuration:
+    type: file
+    fileLocation: "cfgFileWithNoVars.txt" # This is mandatory
+    
+variable1: Configuration Template Test

@@ -1,0 +1,48 @@
+*** Settings ***
+Suite Setup       Get Data    ${env02}
+Resource          ../resources/globalincludes.txt
+
+*** Test Cases ***
+CFG002-TC1: file1AppGroup_NoVars_NoCmd_OneServer
+    [Setup]    Set up test data file for single host    file1AppGroup_NoVars_NoCmd_OneServer    cfgFileWithNoVars
+    linux_config_check_files    ${env02}    file1AppGroup_NoVars_NoCmd_OneServer
+    [Teardown]    Teardown test data file for single host    file1AppGroup_NoVars_NoCmd_OneServer    cfgFileWithNoVars
+
+CFG002-TC2: file1AppGroup_NoVars
+    [Setup]    Set up test data file for single host    file1AppGroup_NoVars    cfgFileWith1Vars
+    linux_config_check_files    ${env02}    file1AppGroup_NoVars
+    [Teardown]    Teardown test data file for single host    file1AppGroup_NoVars    cfgFileWith1Vars
+
+CFG002-TC3: file1AppGroup_GroupVars_NoCmd_OneServer
+    [Setup]    Set up test data file for single host    file1AppGroup_GroupVars_NoCmd_OneServer    cfgFileWith1Vars
+    linux_config_check_files    ${env02}    file1AppGroup_GroupVars_NoCmd_OneServer
+    [Teardown]    Teardown test data file for single host    file1AppGroup_GroupVars_NoCmd_OneServer    cfgFileWith1Vars
+
+CFG002-TC4: file1AppGroup_ServerVars_NoCmd_OneServer
+    [Setup]    Set up test data file for single host    file1AppGroup_ServerVars_NoCmd_OneServer    cfgFileWith1Vars
+    linux_config_check_files    ${env02}    file1AppGroup_ServerVars_NoCmd_OneServer
+    [Teardown]    Teardown test data file for single host    file1AppGroup_ServerVars_NoCmd_OneServer    cfgFileWith1Vars
+
+CFG002-TC5: file1AppGroup_WithVars_NoCmd_OneServer
+    [Setup]    Set up test data file for single host    file1AppGroup_WithVars_NoCmd_OneServer    cfgFileWith1Vars
+    linux_config_check_files    ${env02}    file1AppGroup_WithVars_NoCmd_OneServer
+    [Teardown]    Teardown test data file for single host    file1AppGroup_WithVars_NoCmd_OneServer    cfgFileWith1Vars
+
+*** Keywords ***
+Teardown test data file for single host
+    [Arguments]    ${config}    ${destFileName}
+    Open Connection    ${${config}[0]}
+    ${keyStoreInfo} =    RSA Get Key Locations
+    Login With Public Key    ${SSH_USER}    ${keyStoreInfo['privateKey']}    ${keyStoreInfo['privateKeyPass']}
+    Execute Command    rm -rf ${config}.txt    ${destFileName}.txt
+    Close All Connections
+
+Set up test data file for single host
+    [Arguments]    ${config}    ${destFileName}
+    RSA_set_keystore_location    ${ROOT_DIR}/keyStore    False
+    RSA_ssh_copy_key    ${${config}[0]}    ${SSH_USER}    ${SSH_PASS}
+    Open Connection    ${${config}[0]}
+    ${keyStoreInfo} =    RSA Get Key Locations
+    Login With Public Key    ${SSH_USER}    ${keyStoreInfo['privateKey']}    ${keyStoreInfo['privateKeyPass']}
+    Put File    ${TEMPLATES_RESOURCES_DIR}/pregeneratedFiles/${config}    ${destFileName}.txt
+    Close All Connections

@@ -1,0 +1,7 @@
+*** Settings ***
+Variables         env.py
+Library           YamlVariablesLibrary    ${ROOT_DIR}    ${ENVIRONMENT_RESOURCES_DIR}
+Library           LinuxCfgTestLibrary    ${ROOT_DIR}    ${ENVIRONMENT_RESOURCES_DIR}    ${TEMPLATES_RESOURCES_DIR}
+Library           RsaLibrary
+Library           SSHLibrary
+Library           DiffLibrary2
